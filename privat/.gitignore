@@ -1,0 +1,10 @@
+
+# Lokale Konfigurationsdateien
+env.js
+
+# macOS-Systemdateien
+.DS_Store
+
+# Netlify- und Node-Ordner
+.netlify
+node_modules
