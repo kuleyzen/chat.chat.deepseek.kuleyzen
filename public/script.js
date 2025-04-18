@@ -1,5 +1,13 @@
+
+import {
+  createThread,
+  saveMessage,
+  loadMessages,
+  loadThreads
+} from './supabase-functions.js';
 // 🌐 globale Variablen
 let chatHistory = [];
+let currentThreadId = null;   // 👈 NEU: Thread-ID wird von Supabase gesetzt
 let currentUser = "eris";
 let currentModel = "deepseek-chat";
 
@@ -21,10 +29,17 @@ modelSelect.addEventListener("change", () => {
 });
 
 // 🆕 Neuer Chat
-newChatBtn.addEventListener("click", () => {
+newChatBtn.addEventListener("click", async() => {
   chatHistory = [];
   chatOutput.innerHTML = "";
-  appendMessage("system", `Neuer Chat gestartet für ${currentUser}`);
+  try {
+    const newThread = await createThread(currentUser, `Chat mit ${currentUser}`);
+    currentThreadId = newThread.id;
+    appendMessage("system", `Neuer Chat gestartet für ${currentUser}`);
+  } catch (err) {
+    console.error("Thread konnte nicht erstellt werden:", err);
+    appendMessage("system", `⚠️ Fehler beim Erstellen des Chats`);
+  }
 });
 
 // 📨 Senden per Button
