@@ -1,1 +1,140 @@
-body { font-family: sans-serif; }
+/* 🧩 Grundlayout */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background-color: #f6f6f6;
+    color: #333;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .app-container {
+    width: 100%;
+    max-width: 1200px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* 🔝 Kopfbereich */
+  .app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #34495e;
+    color: white;
+    padding: 1rem;
+    gap: 1rem;
+  }
+  
+  .app-header select,
+  .app-header button {
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: none;
+  }
+  
+  /* 🔄 Hauptbereich: Chat + Sidebar */
+  .chat-layout {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+  }
+  
+  /* 💬 Chatbereich */
+  .chat-area {
+    flex: 1;
+    padding: 1rem;
+    overflow-y: auto;
+    background-color: white;
+  }
+  
+  .chat-area p {
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    border-radius: 6px;
+    max-width: 80%;
+    line-height: 1.4;
+  }
+  
+  .chat-area p.user {
+    background-color: #d1ecf1;
+    align-self: flex-end;
+    margin-left: auto;
+  }
+  
+  .chat-area p.bot {
+    background-color: #e2e3e5;
+    align-self: flex-start;
+    margin-right: auto;
+  }
+  
+  /* 📚 Sidebar */
+  .sidebar {
+    width: 250px;
+    background-color: #ecf0f1;
+    padding: 1rem;
+    border-left: 1px solid #ccc;
+    overflow-y: auto;
+  }
+  
+  .sidebar h3 {
+    margin-top: 0;
+  }
+  
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar li {
+    padding: 0.5rem;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .sidebar li:hover {
+    background-color: #d0d0d0;
+  }
+  
+  /* 📥 Eingabezeile */
+  .chat-input-footer {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem;
+    background-color: #f1f1f1;
+    border-top: 1px solid #ccc;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  
+  #chat-input {
+    flex: 1;
+    padding: 0.5rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  #file-upload {
+    flex-shrink: 0;
+  }
+  
+  #send-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    background-color: #2ecc71;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  #send-btn:hover {
+    background-color: #27ae60;
+  }
+  
+  #token-counter {
+    margin-left: auto;
+    font-size: 0.9rem;
+    color: #666;
+  }

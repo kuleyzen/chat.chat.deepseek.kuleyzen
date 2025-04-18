@@ -1,0 +1,7 @@
+.DS_Store
+netfly/.DS_Store
+privat/
+
+
+# Local Netlify folder
+.netlify

@@ -1,24 +1,57 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
-  <title>Kuleyzen Bot</title>
-  <style>
-    #chat-output { 
-      height: 300px; 
-      border: 1px solid #ccc; 
-      padding: 10px; 
-      overflow-y: scroll; 
-    }
-    #chat-input { 
-      width: 80%; 
-      padding: 8px; 
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kuleyzen AI Chat</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>DeepSeek Chatbot</h1>
-  <div id="chat-output"></div>
-  <input id="chat-input" placeholder="Nachricht eingeben...">
+  <div class="app-container">
+    
+    <!-- 🧑 Benutzer und Modellwahl -->
+    <header class="app-header">
+      <select id="user-select">
+        <option value="eris">Eris</option>
+        <option value="pinar">Pinar</option>
+      </select>
+
+      <select id="model-select">
+        <option value="deepseek-chat">DeepSeek</option>
+        <option value="gpt-4">OpenAI GPT-4</option>
+        <option value="gemini">Google Gemini</option>
+      </select>
+
+      <button id="new-chat">🆕 Neuer Chat</button>
+    </header>
+
+    <!-- 💬 Hauptbereich: Chat + Sidebar -->
+    <main class="chat-layout">
+
+      <!-- 📜 Chatverlauf -->
+      <section class="chat-area" id="chat-output">
+        <!-- Chat wird hier dynamisch angezeigt -->
+      </section>
+
+      <!-- 📚 Rechte Sidebar mit gespeicherten Chats -->
+      <aside class="sidebar">
+        <h3>🧾 Gespeicherte Chats</h3>
+        <ul id="saved-chats">
+          <!-- Dynamisch gefüllt -->
+        </ul>
+      </aside>
+
+    </main>
+
+    <!-- 📥 Eingabe + Upload -->
+    <footer class="chat-input-footer">
+      <input type="file" id="file-upload" multiple />
+      <input type="text" id="chat-input" placeholder="Nachricht eingeben…" />
+      <button id="send-btn">Senden</button>
+      <div id="token-counter">Tokens: 0</div>
+    </footer>
+
+  </div>
+
   <script src="script.js"></script>
 </body>
-</html>
