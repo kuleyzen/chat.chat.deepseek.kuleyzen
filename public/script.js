@@ -1,14 +1,22 @@
-
 import {
   createThread,
   saveMessage,
   loadMessages,
   loadThreads
 } from './supabase-functions.js';
+
 // 🌐 globale Variablen
 let chatHistory = [];
-let currentThreadId = null;   // 👈 NEU: Thread-ID wird von Supabase gesetzt
-let currentUser = "eris";
+let currentThreadId = null;
+
+// 🧑 Benutzerliste mit UUIDs
+const userMap = {
+  eris: "00000000-0000-0000-0000-000000000001",
+  pinar: "00000000-0000-0000-0000-000000000002"
+};
+
+let currentUser = "eris"; // Standardanzeige
+let currentUserId = userMap[currentUser];
 let currentModel = "deepseek-chat";
 
 // 🧩 UI-Elemente
@@ -22,6 +30,7 @@ const newChatBtn = document.getElementById("new-chat");
 // 🧑 Benutzer- & Modellwahl
 userSelect.addEventListener("change", () => {
   currentUser = userSelect.value;
+  currentUserId = userMap[currentUser];
 });
 
 modelSelect.addEventListener("change", () => {
@@ -29,16 +38,16 @@ modelSelect.addEventListener("change", () => {
 });
 
 // 🆕 Neuer Chat
-newChatBtn.addEventListener("click", async() => {
+newChatBtn.addEventListener("click", async () => {
   chatHistory = [];
   chatOutput.innerHTML = "";
   try {
-    const newThread = await createThread(currentUser, `Chat mit ${currentUser}`);
+    const newThread = await createThread(currentUserId, `Chat mit ${currentUser}`);
     currentThreadId = newThread.id;
-    appendMessage("system", `Neuer Chat gestartet für ${currentUser}`);
+    appendMessage("system", `🧵 Neuer Chat gestartet für ${currentUser}`);
   } catch (err) {
-    console.error("Thread konnte nicht erstellt werden:", err);
-    appendMessage("system", `⚠️ Fehler beim Erstellen des Chats`);
+    console.error("❌ Thread konnte nicht erstellt werden:", err);
+    appendMessage("system", "⚠️ Fehler beim Erstellen des Chats");
   }
 });
 
@@ -58,13 +67,18 @@ chatInput.addEventListener("keypress", (e) => {
 // 📩 Nachricht senden & anzeigen
 async function handleMessageSend() {
   const userMessage = chatInput.value.trim();
-  if (!userMessage) return;
+  if (!userMessage || !currentThreadId) return;
 
   appendMessage("user", userMessage);
   chatHistory.push({ role: "user", content: userMessage });
   chatInput.value = "";
 
-  // 🔁 Anfrage an deine Funktion
+  try {
+    await saveMessage(currentThreadId, "user", userMessage);
+  } catch (err) {
+    console.error("❌ Fehler beim Speichern der User-Nachricht:", err);
+  }
+
   const response = await fetch("/.netlify/functions/deepseek-proxy", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -78,6 +92,12 @@ async function handleMessageSend() {
   const botMessage = data.choices?.[0]?.message?.content || "(keine Antwort)";
   appendMessage("bot", botMessage);
   chatHistory.push({ role: "assistant", content: botMessage });
+
+  try {
+    await saveMessage(currentThreadId, "assistant", botMessage);
+  } catch (err) {
+    console.error("❌ Fehler beim Speichern der Bot-Antwort:", err);
+  }
 }
 
 // 💬 Nachrichtenanzeige
